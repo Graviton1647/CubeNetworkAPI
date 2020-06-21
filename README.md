@@ -16,7 +16,7 @@ To setup follow the instructions below.
 **Gradle**
 Add this to your dependencies
 
-    compile 'com.github.Graviton1647:CubeNetwork-API:1.0'
+    compile 'com.github.Graviton1647:CubeNetworkAPI:1.0'
 
 and in your  **repositories** add the following 
 
