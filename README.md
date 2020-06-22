@@ -1,15 +1,53 @@
-# CubeNetworkAPI
- 
-# Welcome to CubeAPI!
+---
+description: >-
+  CubeAPI is made to go with Bukkit and uses it for the backend this is for QOL
+  and quicker plugin development .
+---
 
- [![](https://jitpack.io/v/Graviton1647/ForgeMC-API.svg)](https://jitpack.io/#Graviton1647/ForgeMC-API) [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Graviton1647/ForgeMC-API/graphs/commit-activity)  [![GitHub Forks](https://img.shields.io/github/license/Graviton1647/ForgeMC-API)](http://github.com/Graviton1647/ForgeMC-APIs/releases/) 
+# CubeAPI
+
+## Installing CubeAPI
+
+Installing CubeAPI is a fairly straight forward process:
+
+{% tabs %}
+{% tab title="Gradle" %}
+Find **build.gradle** Under repositories add 
+
+```text
+maven { url 'https://jitpack.io' }
+```
+
+Now under dependencies add 
+
+```text
+compile 'com.github.Graviton1647:CubeNetworkAPI:2.0'
+```
+{% endtab %}
+
+{% tab title="Maven" %}
+Find **pom.xml** and under dependencies add
+
+```bash
+<dependency>
+    <groupId>com.github.Graviton1647</groupId>
+    <artifactId>CubeNetworkAPI</artifactId>
+    <version>2.0</version>
+</dependency>
+```
+
+Now under **repositories** add 
+
+```bash
+<repository>
+          <id>jitpack</id>
+          <url>https://jitpack.io</url>
+</repository>
+```
+{% endtab %}
+{% endtabs %}
 
 
-CubeAPI is made to go with Bukkit and uses it for the backend this is for QOL and quicker plugin development .
 
 
-# Docs
 
-All docs can be found here
-
-https://cubenetwork.gitbook.io/cubeapi/
