@@ -12,17 +12,6 @@ import org.cube.api.CubePlugin
 import org.cube.api.CubePlugin.Companion.playerMenu
 
 
-fun Player.getMenu() : PlayerMenu {
-    val menu : PlayerMenu
-    return if(playerMenu.containsKey(player)) {
-        playerMenu[player]!!
-    } else {
-        menu = PlayerMenu(player)
-        playerMenu[player] = menu
-        menu
-    }
-}
-
 fun Player.message(vararg message : String) {
     message.forEach {
         sendMessage(ChatColor.translateAlternateColorCodes('&',it))
