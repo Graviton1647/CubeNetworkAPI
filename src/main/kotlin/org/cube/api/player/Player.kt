@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitRunnable
 import org.cube.api.CubePlugin
-import org.cube.api.CubePlugin.Companion.playerMenu
+
 
 
 fun Player.message(vararg message : String) {

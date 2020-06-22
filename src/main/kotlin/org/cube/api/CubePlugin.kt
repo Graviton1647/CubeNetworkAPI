@@ -20,7 +20,7 @@ abstract class CubePlugin : JavaPlugin() {
     }
 
     override fun onEnable() {
-       plugin = this
+        plugin = this
         makeData()
         logger.info { "Starting ${this.name}" }
         val time =  measureTimeMillis {
