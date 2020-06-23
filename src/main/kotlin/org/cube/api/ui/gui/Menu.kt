@@ -26,7 +26,7 @@ abstract class Menu(var name : String, private val rows : Int) : InventoryHolder
 
     abstract var items : ArrayList<InventorySlot>
 
-    abstract var filler : ItemStack
+    abstract var filler : InventorySlot
 
 
 
@@ -56,7 +56,7 @@ abstract class Menu(var name : String, private val rows : Int) : InventoryHolder
     open fun setFiller() {
         repeat(9 * rows) {
             if (inventory.getItem(it) == null) {
-                inventory.setItem(it, filler)
+                inventory.setItem(it, createGuiItem(filler))
             }
         }
     }
