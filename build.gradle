@@ -55,7 +55,7 @@ dependencies {
 
 
     // Refelctions
-    compile 'com.github.Graviton1647:reflections:0.9.16'
+    compile 'com.github.Graviton1647:reflections:0.9.17'
 
 
     // Nitrite database
