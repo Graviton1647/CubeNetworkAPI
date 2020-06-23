@@ -46,7 +46,6 @@ object CommandLoader {
                 if (!COMMANDS.contains(annotation.name)) {
                     try {
                         val instance = it.getConstructor().newInstance() as CommandExecutor
-
                         register(
                             annotation.name,
                             Command(
@@ -57,13 +56,11 @@ object CommandLoader {
                                 instance
                             )
                         )
-                        if(it.getConstructor().newInstance() is TabCompleter) {
-                            CubePlugin.plugin.getCommand(annotation.name).tabCompleter = it.getConstructor().newInstance() as TabCompleter
-                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
+
             }
         }
     }
