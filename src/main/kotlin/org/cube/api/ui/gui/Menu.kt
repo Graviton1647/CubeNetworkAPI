@@ -18,8 +18,6 @@ abstract class Menu(var name : String, private val rows : Int) : InventoryHolder
 
     abstract fun onItemClick(event : InventoryClickEvent)
 
-    abstract fun onItemDrag(event : InventoryDragEvent)
-
     abstract fun onMenuClose(event : InventoryCloseEvent)
 
     abstract fun onMenuOpen(event : InventoryOpenEvent)
@@ -48,8 +46,8 @@ abstract class Menu(var name : String, private val rows : Int) : InventoryHolder
         meta.displayName = data.name
         if(data.lore.isNotEmpty()) {
             meta.lore = data.lore
-            item.itemMeta = meta
         }
+        item.itemMeta = meta
         return item
     }
 
