@@ -4,8 +4,10 @@ import mu.KotlinLogging
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandMap
+import org.bukkit.command.TabCompleter
 import org.bukkit.command.defaults.BukkitCommand
 import org.bukkit.plugin.java.JavaPlugin
+import org.cube.api.CubePlugin
 
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
@@ -57,6 +59,9 @@ object CommandLoader {
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
+                }
+                if(it.getConstructor().newInstance() is TabCompleter) {
+                    CubePlugin.plugin.getCommand(annotation.name).tabCompleter = it.getConstructor().newInstance() as TabCompleter
                 }
             }
         }
