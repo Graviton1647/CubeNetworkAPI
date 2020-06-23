@@ -2,6 +2,7 @@ package org.cube.api.ui.gui
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -24,7 +25,7 @@ abstract class Menu(var name : String, private val rows : Int) : InventoryHolder
 
     abstract var items : ArrayList<InventorySlot>
 
-    abstract var filler : InventorySlot
+    abstract var filler : Material
 
 
 
@@ -54,7 +55,7 @@ abstract class Menu(var name : String, private val rows : Int) : InventoryHolder
     open fun setFiller() {
         repeat(9 * rows) {
             if (inventory.getItem(it) == null) {
-                inventory.setItem(it, createGuiItem(filler))
+                inventory.setItem(it, ItemStack(filler,1))
             }
         }
     }
