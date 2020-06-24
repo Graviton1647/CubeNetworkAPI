@@ -4,8 +4,11 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
+import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64.encodeBase64
 import java.util.*
+import java.util.UUID
 import java.util.stream.Collectors
+
 
 fun getPlayerHead(owner: String): ItemStack {
     val newVersion = Arrays.stream(Material.values())

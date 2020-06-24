@@ -13,19 +13,14 @@ abstract class CubePlugin : JavaPlugin() {
 
     companion object {
 
-        lateinit var plugin : JavaPlugin
-
         val logger = KotlinLogging.logger {  }
 
     }
 
     override fun onEnable() {
-        plugin = this
         makeData()
         logger.info { "Starting ${this.name}" }
         val time =  measureTimeMillis {
-            EventLoader.load(this)
-            CommandLoader.load(this)
             start()
         }
         logger.info { "${this.name} Started up in [${time.toDouble() / 1000.0}] seconds." }

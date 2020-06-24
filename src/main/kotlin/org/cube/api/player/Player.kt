@@ -7,6 +7,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitRunnable
 import org.cube.api.CubePlugin
 
@@ -41,11 +42,12 @@ fun Player.inRange(otherlocation : Location, distance : Double) : Boolean {
 }
 
 fun Player.teleport(
-    location : Location,
-    radius : Int,
-    checks : Int,
-    message: String = ChatColor.RED.toString() + "Couldn't find a safe place to teleport. Try again later.",
-    notSafe : Array<Material> = arrayOf(Material.LAVA)
+        plugin : Plugin,
+        location : Location,
+        radius : Int,
+        checks : Int,
+        message: String = ChatColor.RED.toString() + "Couldn't find a safe place to teleport. Try again later.",
+        notSafe : Array<Material> = arrayOf(Material.LAVA)
 ) {
     val findSafePlaceWorker: BukkitRunnable = FindSafeLocationRunnable(
         player,
@@ -55,7 +57,7 @@ fun Player.teleport(
         message,
         notSafe
     )
-    findSafePlaceWorker.runTaskTimer(CubePlugin.plugin, 1, 1)
+    findSafePlaceWorker.runTaskTimer(plugin, 1, 1)
 }
 
 
