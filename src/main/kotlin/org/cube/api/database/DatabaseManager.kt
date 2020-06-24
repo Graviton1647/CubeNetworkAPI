@@ -1,7 +1,7 @@
 package org.cube.api.database
 
-import org.cube.api.commands.CommandLoader.logger
 import org.dizitart.no2.Nitrite
+import org.cube.api.CubePlugin.Companion.logger
 
 object DatabaseManager {
 
