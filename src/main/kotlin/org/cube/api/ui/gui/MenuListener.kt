@@ -14,13 +14,15 @@ class MenuListener : Listener {
 
     @EventHandler
     fun onMenuClick(event : InventoryClickEvent) {
-        val holder : InventoryHolder = event.inventory.holder!!
-        if (holder is Menu) {
-            event.isCancelled = true
-            if(event.currentItem != null) {
-                val menu : Menu = holder
-                if(menu.items.find { it.slot == event.slot }!!.allow.contains(ActionType.CLICKABLE) ||  menu.items.find { it.slot == event.slot }!!.allow.isEmpty()) {
-                    menu.onItemClick(event)
+        val holder : InventoryHolder = event.inventory?.holder ?: return
+        holder.let {
+            if (holder is Menu) {
+                event.isCancelled = true
+                if(event.currentItem != null) {
+                    val menu : Menu = holder
+                    if(menu.items.find { it.slot == event.slot }!!.allow.contains(ActionType.CLICKABLE) ||  menu.items.find { it.slot == event.slot }!!.allow.isEmpty()) {
+                        menu.onItemClick(event)
+                    }
                 }
             }
         }
@@ -28,28 +30,36 @@ class MenuListener : Listener {
 
     @EventHandler
     fun onDragEvent(event : InventoryDragEvent) {
-        val holder : InventoryHolder = event.inventory.holder!!
-        if (holder is Menu) {
-            val menu : Menu = holder
+        val holder : InventoryHolder = event.inventory?.holder ?: return
+        holder.let {
+            if (holder is Menu) {
+                val menu : Menu = holder
+            }
         }
     }
 
     @EventHandler
     fun onMenuClose(event : InventoryCloseEvent) {
-        val holder : InventoryHolder = event.inventory.holder!!
-        if (holder is Menu) {
-            val menu : Menu = holder
-            menu.onMenuClose(event)
+        val holder : InventoryHolder = event.inventory?.holder ?: return
+        holder.let {
+            if (holder is Menu) {
+                val menu : Menu = holder
+                menu.onMenuClose(event)
+            }
         }
+
     }
 
     @EventHandler
     fun onMenuOpen(event : InventoryOpenEvent) {
         val holder : InventoryHolder = event.inventory?.holder ?: return
-        if (holder is Menu) {
-            val menu : Menu = holder
-            menu.onMenuOpen(event)
+        holder.let {
+            if (holder is Menu) {
+                val menu : Menu = holder
+                menu.onMenuOpen(event)
+            }
         }
+
     }
 
 }

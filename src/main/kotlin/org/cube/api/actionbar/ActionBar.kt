@@ -2,6 +2,7 @@ package org.cube.api.actionbar
 
 import com.google.common.base.Preconditions
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.json.simple.JSONObject
 
@@ -13,8 +14,8 @@ class ActionBar(val text: String) {
      * Constructs an [ActionBar] object based on plain text.
      */
     init {
-        Preconditions.checkNotNull(text)
-        json = convert(text)
+        Preconditions.checkNotNull(ChatColor.translateAlternateColorCodes('&',text))
+        json = convert(ChatColor.translateAlternateColorCodes('&',text))
     }
 
     /**
