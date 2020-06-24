@@ -2,57 +2,42 @@ package org.cube.api
 
 import mu.KotlinLogging
 import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.cube.api.commands.CommandLoader
 import org.cube.api.events.EventLoader
 import kotlin.system.measureTimeMillis
 
 
-abstract class CubePlugin : JavaPlugin() {
+object CubePlugin {
 
-    companion object {
+    private val logger = KotlinLogging.logger {  }
 
-        val logger = KotlinLogging.logger {  }
-
-    }
-
-    override fun onEnable() {
-        makeData()
-        logger.info { "Starting ${this.name}" }
+    fun start(plugin : JavaPlugin, task : () -> Unit ) {
+        makeData(plugin)
+        logger.info { "Starting ${plugin.name}" }
         val time =  measureTimeMillis {
-            start()
+            EventLoader.load(plugin)
+            CommandLoader.load(plugin)
+            task.invoke()
         }
-        logger.info { "${this.name} Started up in [${time.toDouble() / 1000.0}] seconds." }
+        logger.info { "${plugin.name} Started up in [${time.toDouble() / 1000.0}] seconds." }
     }
 
-    override fun onDisable() {
-        stop()
+    fun disable(plugin : JavaPlugin, task : () -> Unit ) {
         Bukkit.getOnlinePlayers().forEach {
            it.closeInventory()
         }
-        logger.info { "Stopped ${this.name}" }
+        task.invoke()
+        logger.info { "Stopped ${plugin.name}" }
     }
 
     /**
      * Make the data folder if it does not exists
      */
-    private fun makeData() {
-        if(!dataFolder.exists()) {
-            dataFolder.mkdirs()
+    private fun makeData(plugin : JavaPlugin) {
+        if(!plugin.dataFolder.exists()) {
+            plugin.dataFolder.mkdirs()
         }
     }
-
-
-
-    /**
-     * Called when the plugin is enabled
-     */
-    abstract fun start()
-
-    /**
-     * Called when the plugin is disabled
-     */
-    abstract fun stop()
 
 }

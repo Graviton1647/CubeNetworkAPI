@@ -17,7 +17,7 @@ abstract class Countdown(private val plugin : Plugin, var time : Long) {
     fun start() {
         timer = object : BukkitRunnable() {
             override fun run() {
-                if(timeLeft < 0) {
+                if(timeLeft <= 0) {
                     cancel()
                     onFinish()
                 } else {
