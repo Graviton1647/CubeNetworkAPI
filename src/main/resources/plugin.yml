@@ -1,0 +1,7 @@
+name: CubePlugin
+version: 1.1
+api-version: 1.15
+main: org.cube.api.CubePlugin
+author: Gravition
+
+
