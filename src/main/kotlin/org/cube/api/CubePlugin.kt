@@ -5,11 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class CubePlugin : JavaPlugin() {
 
-    companion object {
-
-        lateinit var manager : BasicPlugin
-
-    }
+    private lateinit var manager : BasicPlugin
 
     override fun onEnable() {
         manager = BasicPlugin(this)
