@@ -25,7 +25,8 @@ abstract class CubePlugin : JavaPlugin() {
         val time =  measureTimeMillis {
             EventLoader.load(this)
             val commands = CommandManager(this)
-            commands.registerCommands(this)
+            commands.loadCommands(this)
+            commands.loadTabComplete()
             start()
         }
         logger.info { "${this.name} Started up in [${time.toDouble() / 1000.0}] seconds." }
