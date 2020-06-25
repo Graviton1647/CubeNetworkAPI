@@ -2,9 +2,8 @@ package org.cube.api
 
 import mu.KotlinLogging
 import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
-import org.cube.api.commands.CommandLoader
+import org.cube.api.commands.CommandManager
 import org.cube.api.events.EventLoader
 import kotlin.system.measureTimeMillis
 
@@ -25,7 +24,8 @@ abstract class CubePlugin : JavaPlugin() {
         logger.info { "Starting ${this.name}" }
         val time =  measureTimeMillis {
             EventLoader.load(this)
-            CommandLoader.load(this)
+            val commands = CommandManager(this)
+            commands.registerCommands(this)
             start()
         }
         logger.info { "${this.name} Started up in [${time.toDouble() / 1000.0}] seconds." }

@@ -1,15 +1,16 @@
 package org.cube.api.commands
 
-/**
- *  [MinecraftCommand]
- *  @param name Name of the command
- *  @param description Description of the command
- *  @param usageMessage Usage Message of the command
- *  @param aliasses Aliasses of the command
- */
+
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+
 annotation class MinecraftCommand(
-    val name : String,
-    val description : String,
-    val usageMessage : String,
-    val aliasses : Array<String>
+    val name: String,
+    val permission: String = "",
+    val noPerm: String = "You do not have permission to perform that action",
+    val aliases: Array<String> = [],
+    val description: String = "",
+    val usage: String = "",
+    val inGameOnly: Boolean = false
+
 )
