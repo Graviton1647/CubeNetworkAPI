@@ -3,7 +3,7 @@ package org.cube.api
 import org.bukkit.plugin.java.JavaPlugin
 
 
-abstract class CubePlugin : JavaPlugin() {
+class CubePlugin : JavaPlugin() {
 
     companion object {
 
