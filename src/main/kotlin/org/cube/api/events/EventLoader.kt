@@ -2,6 +2,8 @@ package org.cube.api.events
 
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
+import org.cube.api.commands.CommandData
+import org.cube.api.commands.MinecraftCommand
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.scanners.SubTypesScanner
@@ -19,32 +21,18 @@ object EventLoader {
      *  Loads events that have the [MinecraftEvent] annotation
      */
 
-    fun load(plugin: JavaPlugin) {
-
-        val config = ConfigurationBuilder()
-            .addScanners(
-                SubTypesScanner(false),
-                TypeAnnotationsScanner(),
-                MethodAnnotationsScanner()
-            )
-            .addUrls(MinecraftEvent::class.java.getResource(""))
-
-        val reflection = Reflections(config)
-        val cds = reflection.getTypesAnnotatedWith(MinecraftEvent::class.java)
-        if(cds.size != 0) {
-            plugin.logger.info { "Registered ${cds.size} Events." }
-            cds.forEach {
-                val annotation = it.getAnnotation(MinecraftEvent::class.java)
-
-                if (!EVENTS.contains(annotation.name)) {
-                    try {
-                        val instance = it.getConstructor().newInstance() as Listener
-                        plugin.server.pluginManager.registerEvents(instance, plugin)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+    fun load(plugin: JavaPlugin,classes : MutableList<Listener>) {
+        classes.forEach {
+            for (m in it.javaClass.constructors) {
+                if (m.getAnnotation(MinecraftEvent::class.java) != null) {
+                    if (it.javaClass.interfaces !is Listener) {
+                        println("Unable to register Listener . Does not Extend Listener")
+                        continue
                     }
+                    plugin.server.pluginManager.registerEvents(it.javaClass.newInstance(), plugin)
                 }
             }
+            plugin.logger.info { "Registered ${classes.size} Events." }
         }
     }
 

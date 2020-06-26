@@ -20,7 +20,7 @@ fun getPlayerHead(owner: String): ItemStack {
     val type = Material.matchMaterial(
         if (newVersion) "PLAYER_HEAD" else "SKULL_ITEM"
     )
-    val item = ItemStack(type, 1)
+    val item = ItemStack(type!!, 1)
     if (!newVersion) {
         item.durability = 3 as Short
     }

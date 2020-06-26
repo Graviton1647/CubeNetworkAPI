@@ -14,7 +14,9 @@ import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.scanners.SubTypesScanner
 import org.reflections.scanners.TypeAnnotationsScanner
+import org.reflections.util.ClasspathHelper
 import org.reflections.util.ConfigurationBuilder
+import org.reflections.util.FilterBuilder
 import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
@@ -53,15 +55,15 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
                 }
                 try {
                     method.invoke(
-                        methodObject, CommandData(
+                            methodObject, CommandData(
                             sender, cmd, label, args,
                             cmdLabel.split("\\.").toTypedArray().size - 1
-                        )
+                    )
                     )
                 } catch (e : IllegalArgumentException) {
-                   // e.printStackTrace();
+                    // e.printStackTrace();
                 } catch (e : IllegalAccessException) {
-                   // e.printStackTrace();
+                    // e.printStackTrace();
                 } catch (e : InvocationTargetException) {
                     //e.printStackTrace();
                 }
@@ -73,64 +75,37 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
         return true
     }
 
-
-
-    fun loadCommands(plugin: JavaPlugin) {
-        val config = ConfigurationBuilder()
-            .addScanners(
-                SubTypesScanner(false),
-                TypeAnnotationsScanner(),
-                MethodAnnotationsScanner()
-            )
-            .addUrls(MinecraftCommand::class.java.getResource(""))
-
-        val reflection = Reflections(config)
-        val cds = reflection.getMethodsAnnotatedWith(MinecraftCommand::class.java)
-        if(cds.size != 0) {
-            plugin.logger.info { "Registered ${cds.size} Commands." }
-            cds.forEach {
-                val command = it.getAnnotation(MinecraftCommand::class.java)
-                if (it.parameterTypes.size > 1 || it.parameterTypes[0] != CommandData::class.java) {
-                    println("Unable to register command " + it.name + ". Unexpected method arguments")
-                    return
-                }
-                registerCommand(command, command.name, it, it.declaringClass.newInstance())
-                for (alias in command.aliases) {
-                    registerCommand(command, command.name, it, it.declaringClass.newInstance())
-                }
-            }
-        }
-    }
-
-    fun loadTabComplete() {
-        val config = ConfigurationBuilder()
-            .addScanners(
-                SubTypesScanner(false),
-                TypeAnnotationsScanner(),
-                MethodAnnotationsScanner()
-            )
-            .addUrls(MinecraftCompleter::class.java.getResource(""))
-
-        val reflection = Reflections(config)
-        val cds = reflection.getMethodsAnnotatedWith(MinecraftCompleter::class.java)
-        if(cds.size != 0) {
-            cds.forEach {
-                val tab = it.getAnnotation(MinecraftCompleter::class.java)
-
-                if (it.parameterTypes.size > 1 || it.parameterTypes.isEmpty() || it.parameterTypes[0] != CommandData::class.java) {
-                    println("Unable to register tab completer ${it.name}. Unexpected method arguments")
-                    return
-                }
-                if (it.returnType != MutableList::class.java) {
-                    println("Unable to register tab completer " + it.name + ". Unexpected return type")
-                    return
-                }
-                registerCompleter(tab.name, it, it.declaringClass.newInstance())
-                for (alias in tab.aliases) {
-                    registerCompleter(alias, it, it.declaringClass.newInstance())
+    fun loadCommands(plugin: JavaPlugin,classes : MutableList<Any>) {
+        classes.forEach {
+            for (m in it.javaClass.methods) {
+                if (m.getAnnotation(MinecraftCommand::class.java) != null) {
+                    val command = m.getAnnotation(MinecraftCommand::class.java)
+                    if (m.parameterTypes.size > 1 || m.parameterTypes[0] != CommandData::class.java) {
+                        println("Unable to register command ${m.name}. Unexpected method arguments")
+                        continue
+                    }
+                    registerCommand(command, command.name, m, it)
+                    for (alias in command.aliases) {
+                        registerCommand(command, alias!!, m, it)
+                    }
+                } else if (m.getAnnotation(MinecraftCompleter::class.java) != null) {
+                    val comp: MinecraftCompleter = m.getAnnotation(MinecraftCompleter::class.java)
+                    if (m.parameterTypes.size > 1 || m.parameterTypes.isEmpty() || m.parameterTypes[0] != CommandData::class.java) {
+                        println("Unable to register tab completer ${m.name}. Unexpected method arguments")
+                        continue
+                    }
+                    if (m.returnType != MutableList::class.java) {
+                        println("Unable to register tab completer ${m.name}. Unexpected return type")
+                        continue
+                    }
+                    registerCompleter(comp.name, m, it)
+                    for (alias in comp.aliases) {
+                        registerCompleter(alias!!, m, it)
+                    }
                 }
             }
         }
+        plugin.logger.info { "Registered ${classes.size} Commands." }
     }
 
 
@@ -139,7 +114,7 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
         for (s in commandMap.keys) {
             if (!s.contains(".")) {
                 val cmd = map.getCommand(s)
-                val topic: HelpTopic = GenericCommandHelpTopic(cmd)
+                val topic: HelpTopic = GenericCommandHelpTopic(cmd!!)
                 help.add(topic)
             }
         }
@@ -156,10 +131,10 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
             map.register(plugin.name, cmd)
         }
         if (!minecraftCommand.description.equals("", ignoreCase = true) && cmdLabel == label) {
-            map.getCommand(cmdLabel).description = minecraftCommand.description
+            map.getCommand(cmdLabel)!!.description = minecraftCommand.description
         }
         if (!minecraftCommand.usage.equals("", ignoreCase = true) && cmdLabel == label) {
-            map.getCommand(cmdLabel).usage = minecraftCommand.usage
+            map.getCommand(cmdLabel)!!.usage = minecraftCommand.usage
         }
     }
 
@@ -177,7 +152,7 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
             command.completer!!.addCompleter(label, m, obj!!)
         } else if (map.getCommand(cmdLabel) is PluginCommand) {
             try {
-                val command: Any = map.getCommand(cmdLabel)
+                val command: Any = map.getCommand(cmdLabel) as PluginCommand
                 val field: Field = command.javaClass.getDeclaredField("completer")
                 field.isAccessible = true
                 when {
@@ -213,3 +188,5 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
         }
     }
 }
+
+

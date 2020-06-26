@@ -2,6 +2,7 @@ package org.cube.api
 
 import mu.KotlinLogging
 import org.bukkit.Bukkit
+import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.cube.api.commands.CommandManager
 import org.cube.api.events.EventLoader
@@ -23,10 +24,9 @@ abstract class CubePlugin : JavaPlugin() {
         makeData()
         logger.info { "Starting ${this.name}" }
         val time =  measureTimeMillis {
-            EventLoader.load(this)
+            EventLoader.load(this,eventsList)
             val commands = CommandManager(this)
-            commands.loadCommands(this)
-            commands.loadTabComplete()
+            commands.loadCommands(this,commandList)
             start()
         }
         logger.info { "${this.name} Started up in [${time.toDouble() / 1000.0}] seconds." }
@@ -60,5 +60,9 @@ abstract class CubePlugin : JavaPlugin() {
      * Called when the plugin is disabled
      */
     abstract fun stop()
+
+    abstract var commandList : MutableList<Any>
+
+    abstract var eventsList : MutableList<Listener>
 
 }

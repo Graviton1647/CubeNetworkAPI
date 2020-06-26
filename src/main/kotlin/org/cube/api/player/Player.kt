@@ -1,5 +1,8 @@
 package org.cube.api.player
 
+import net.md_5.bungee.api.ChatMessageType
+import net.md_5.bungee.api.chat.TextComponent
+import org.bukkit.Bukkit.spigot
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
@@ -13,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable
 
 fun Player.message(vararg message : String) {
     message.forEach {
-        sendMessage(ChatColor.translateAlternateColorCodes('&',it))
+        spigot().sendMessage(ChatMessageType.CHAT, TextComponent(it))
     }
 }
 
@@ -25,13 +28,13 @@ fun Player.message(vararg message : String) {
  * @param stay time in ticks for titles to stay. Defaults to 70.
  * @param fadeOut time in ticks for titles to fade out. Defaults to 20.
  */
-fun Player.sendTitle(message : List<String>, sub : String = "", fadeIn : Int = 10, stay : Int = 70, fadeOut : Int = 20) {
+fun Player.Title(message : List<String>, sub : String = "", fadeIn : Int = 10, stay : Int = 70, fadeOut : Int = 20) {
     message.forEach {
         sendTitle(ChatColor.translateAlternateColorCodes('&',it),sub,fadeIn,stay,fadeOut)
     }
 }
 
-fun Player.sendTitle(message : String, sub : String = "", fadeIn : Int = 10, stay : Int = 70, fadeOut : Int = 20) {
+fun Player.Title(message : String, sub : String = "", fadeIn : Int = 10, stay : Int = 70, fadeOut : Int = 20) {
     sendTitle(ChatColor.translateAlternateColorCodes('&',message),sub,fadeIn,stay,fadeOut)
 }
 
@@ -48,7 +51,7 @@ fun Player.teleport(
         notSafe : Array<Material> = arrayOf(Material.LAVA)
 ) {
     val findSafePlaceWorker: BukkitRunnable = FindSafeLocationRunnable(
-        player,
+        player!!,
         location,
         radius,
         checks,

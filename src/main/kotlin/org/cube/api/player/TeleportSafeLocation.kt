@@ -23,7 +23,7 @@ object TeleportSafeLocation {
         val x = ix + 0.5
         val iz: Int = ThreadLocalRandom.current().nextInt(max(abs(maxZ - minZ), 1)) + minZ
         val z = iz + 0.5
-        return Location(centre.world, x, centre.world.getHighestBlockYAt(ix, iz).toDouble(), z)
+        return Location(centre.world, x, centre.world!!.getHighestBlockYAt(ix, iz).toDouble(), z)
     }
 
     fun isSafe(loc: Location, notSafe : Array<Material>): Boolean {
@@ -32,9 +32,9 @@ object TeleportSafeLocation {
         val y = loc.blockY
         val z = loc.blockZ
 
-        val block = loc.world.getBlockAt(x, y, z)
-        val below = loc.world.getBlockAt(x, y - 1, z)
-        val above = loc.world.getBlockAt(x, y + 1, z)
+        val block = loc.world!!.getBlockAt(x, y, z)
+        val below = loc.world!!.getBlockAt(x, y - 1, z)
+        val above = loc.world!!.getBlockAt(x, y + 1, z)
 
         return !(notSafe.contains(below.type) && block.type.isSolid && notSafe.contains(above.type) && block.type.isOccluding)
     }

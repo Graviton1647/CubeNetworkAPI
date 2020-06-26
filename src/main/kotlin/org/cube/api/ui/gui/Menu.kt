@@ -44,7 +44,7 @@ abstract class Menu(var name : String, private val rows : Int) : InventoryHolder
     private fun createGuiItem(data : InventorySlot): ItemStack {
         val item = data.material
         val meta = item.itemMeta
-        meta.displayName = data.name
+        meta!!.setDisplayName(data.name)
         if(data.lore.isNotEmpty()) {
             meta.lore = data.lore
         }
