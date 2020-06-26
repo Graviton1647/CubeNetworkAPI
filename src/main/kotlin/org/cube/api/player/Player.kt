@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable
 
 fun Player.message(vararg message : String) {
     message.forEach {
-        spigot().sendMessage(ChatMessageType.CHAT, TextComponent(it))
+        spigot().sendMessage(ChatMessageType.CHAT, TextComponent(ChatColor.translateAlternateColorCodes('&',it)))
     }
 }
 
