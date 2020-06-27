@@ -1,5 +1,6 @@
 package org.cube.api.events
 
+import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.cube.api.commands.CommandData
@@ -22,17 +23,17 @@ object EventLoader {
      */
 
     fun load(plugin: JavaPlugin,classes : MutableList<Listener>) {
+        var events = 0
         classes.forEach {
-            for (m in it.javaClass.constructors) {
-                if (m.getAnnotation(MinecraftEvent::class.java) != null) {
-                    if (it.javaClass.interfaces !is Listener) {
-                        println("Unable to register Listener . Does not Extend Listener")
-                        continue
-                    }
+            for (m in it.javaClass.methods) {
+                if (m.getAnnotation(EventHandler::class.java) != null) {
                     plugin.server.pluginManager.registerEvents(it.javaClass.newInstance(), plugin)
+                    events++
                 }
             }
-            plugin.logger.info { "Registered ${classes.size} Events." }
+        }
+        if(events != 0) {
+            plugin.logger.info { "Registered $events Events." }
         }
     }
 

@@ -76,6 +76,7 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
     }
 
     fun loadCommands(plugin: JavaPlugin,classes : MutableList<Any>) {
+        var events = 0
         classes.forEach {
             for (m in it.javaClass.methods) {
                 if (m.getAnnotation(MinecraftCommand::class.java) != null) {
@@ -102,10 +103,13 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
                     for (alias in comp.aliases) {
                         registerCompleter(alias!!, m, it)
                     }
+                    events++
                 }
             }
         }
-        plugin.logger.info { "Registered ${classes.size} Commands." }
+        if(events != 0) {
+            plugin.logger.info { "Registered $events Commands." }
+        }
     }
 
 
