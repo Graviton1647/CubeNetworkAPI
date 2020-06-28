@@ -27,9 +27,8 @@ abstract class Menu(var name : String, private val rows : Int) : InventoryHolder
 
     abstract var filler : Material
 
-
-
     fun open(player : Player) {
+        println("I have Opened the GUI for you")
         inv = Bukkit.createInventory(this,9 * rows, ChatColor.translateAlternateColorCodes('&',name))
         if(!items.isNullOrEmpty()) {
             items.forEach {

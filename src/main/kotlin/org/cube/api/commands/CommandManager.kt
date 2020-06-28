@@ -76,7 +76,7 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
     }
 
     fun loadCommands(plugin: JavaPlugin,classes : MutableList<Any>) {
-        var events = 0
+        var commands = 0
         classes.forEach {
             for (m in it.javaClass.methods) {
                 if (m.getAnnotation(MinecraftCommand::class.java) != null) {
@@ -89,6 +89,7 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
                     for (alias in command.aliases) {
                         registerCommand(command, alias!!, m, it)
                     }
+                    commands++
                 } else if (m.getAnnotation(MinecraftCompleter::class.java) != null) {
                     val comp: MinecraftCompleter = m.getAnnotation(MinecraftCompleter::class.java)
                     if (m.parameterTypes.size > 1 || m.parameterTypes.isEmpty() || m.parameterTypes[0] != CommandData::class.java) {
@@ -103,12 +104,11 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
                     for (alias in comp.aliases) {
                         registerCompleter(alias!!, m, it)
                     }
-                    events++
                 }
             }
         }
-        if(events != 0) {
-            plugin.logger.info { "Registered $events Commands." }
+        if(commands != 0) {
+            plugin.logger.info { "Registered $commands Commands." }
         }
     }
 

@@ -9,7 +9,6 @@ import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.inventory.InventoryHolder
 import org.cube.api.events.MinecraftEvent
 
-@MinecraftEvent("eventname")
 class MenuListener : Listener {
 
     @EventHandler

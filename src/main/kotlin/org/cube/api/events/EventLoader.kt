@@ -5,6 +5,7 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.cube.api.commands.CommandData
 import org.cube.api.commands.MinecraftCommand
+import org.cube.api.ui.gui.MenuListener
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.scanners.SubTypesScanner
@@ -23,6 +24,9 @@ object EventLoader {
      */
 
     fun load(plugin: JavaPlugin,classes : MutableList<Listener>) {
+
+        classes.add(MenuListener())
+
         var events = 0
         classes.forEach {
             for (m in it.javaClass.methods) {

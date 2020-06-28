@@ -6,6 +6,7 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.cube.api.commands.CommandManager
 import org.cube.api.events.EventLoader
+import org.cube.api.ui.gui.MenuListener
 import kotlin.system.measureTimeMillis
 
 

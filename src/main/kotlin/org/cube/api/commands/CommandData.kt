@@ -2,6 +2,7 @@ package org.cube.api.commands
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
 
@@ -25,12 +26,16 @@ class CommandData(val sender : CommandSender, val command : Command, var label :
         return sender is Player
     }
 
-    fun getPlayer(): Player? {
-        return if (sender is Player) {
-            sender
-        } else {
-            null
+
+    fun isConsole(): Boolean {
+        return sender is ConsoleCommandSender
+    }
+
+    fun getPlayer(): Player {
+        if(sender is Player) {
+            return sender
         }
+        return sender as Player
     }
     
 }
