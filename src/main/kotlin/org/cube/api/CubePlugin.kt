@@ -6,7 +6,7 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.cube.api.commands.CommandManager
 import org.cube.api.events.EventLoader
-import org.cube.api.ui.gui.MenuListener
+import org.cube.api.menu.MenuListener
 import kotlin.system.measureTimeMillis
 
 
@@ -30,6 +30,7 @@ abstract class CubePlugin : JavaPlugin() {
             commands.loadCommands(this,commandList)
             start()
         }
+        
         logger.info { "${this.name} Started up in [${time.toDouble() / 1000.0}] seconds." }
     }
 

@@ -1,8 +1,5 @@
 package org.cube.api.player
 
-import net.md_5.bungee.api.ChatMessageType
-import net.md_5.bungee.api.chat.TextComponent
-import org.bukkit.Bukkit.spigot
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material

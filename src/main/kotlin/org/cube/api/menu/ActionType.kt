@@ -1,4 +1,4 @@
-package org.cube.api.ui.gui
+package org.cube.api.menu
 
 enum class ActionType {
     CLICKABLE,

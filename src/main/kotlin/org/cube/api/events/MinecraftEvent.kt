@@ -4,4 +4,7 @@ package org.cube.api.events
  *  [MinecraftEvent]
  *  @param name Name of the event
  */
-annotation class MinecraftEvent(val name : String)
+
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class MinecraftEvent
