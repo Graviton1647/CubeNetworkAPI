@@ -21,6 +21,7 @@ import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.util.*
+import kotlin.reflect.KClass
 
 
 class CommandManager(private val plugin: Plugin) : CommandExecutor {
@@ -30,6 +31,27 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<String>): Boolean {
         return handleCommand(sender, cmd, label, args)
+    }
+
+    fun typeCheck(classes : Array<KClass<out Any>>, input : Array<String>) : Boolean{
+        if(input.size != classes.size) return false
+
+        try {
+            for (i in input.indices) {
+                if (when (classes[i]) {
+                            Int::class -> input[i].toIntOrNull()
+                            Double::class -> input[i].toDoubleOrNull()
+                            Float::class -> input[i].toFloatOrNull()
+                            Byte::class -> input[i].toByteOrNull()
+                            Boolean::class -> input[i].toBoolean()
+                            String::class -> input[i]
+                            else ->  null
+                        } == null) {
+                    return false
+                }
+            }
+        } catch(ex : Exception) { return false }
+        return true
     }
 
 
@@ -45,10 +67,17 @@ class CommandManager(private val plugin: Plugin) : CommandExecutor {
                 val method = commandMap[cmdLabel]!!.key
                 val methodObject = commandMap[cmdLabel]!!.value
                 val command = method.getAnnotation(MinecraftCommand::class.java)
+
                 if (command.permission != "" && !sender.hasPermission(command.permission)) {
                     sender.sendMessage(command.noPerm)
                     return true
                 }
+
+                if (!typeCheck(command.types,args)) {
+                    sender.sendMessage(command.wrongArguments)
+                    return true
+                }
+
                 if (command.inGameOnly && sender !is Player) {
                     sender.sendMessage("This command is only performable in game")
                     return true
